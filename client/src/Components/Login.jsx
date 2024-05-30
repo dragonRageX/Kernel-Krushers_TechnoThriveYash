@@ -26,7 +26,7 @@ const Login = () => {
         const authToken = res.data.auth_token;
         console.log(auth)
         localStorage.setItem("auth",authToken);
-        navigate('/');
+        navigate(location.state || '/');
         }
     } catch (error) {
         toast.error('Something went wrong') 
@@ -38,10 +38,10 @@ const Login = () => {
     e.preventDefault();
     try {
         const res=await axios.post(`${process.env.REACT_APP_API}/auth/users/`,{username:username,email:email,password:password})
-        if(res.data===200)
+        if(res.status===200 || res.status===201)
         {
           toast.success('Signed up')
-          navigate('/')
+          // navigate('/')
         }
     } catch (error) {
         toast.error('Something went wrong')

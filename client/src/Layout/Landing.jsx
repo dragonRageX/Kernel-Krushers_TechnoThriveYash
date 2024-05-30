@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/auth";
@@ -7,32 +7,52 @@ import axios from "axios";
 import Login from "../Components/Login";
 const Landing = () => {
   const [auth, setAuth] = useAuth();
+  const [isDoctor,setIsDoctor]=useState(false)
+  const checkDoc=async()=>{
+    try {
+      const {data}=await axios.get(`${process.env.REACT_APP_API}/auth/users/me/`)
+      if(data.username==='admin')
+      setIsDoctor(true)
+    } catch (error) {
+      console.log(error.message)
+      // toast.error('Something went wrong')
+    }
+  }
+  useEffect(()=>{
+    checkDoc()
+  },[auth])
   return (
     <Layout>
       <div>
         <div className="d-flex flex-wrap align-items-center">
           <img
             src="https://img.freepik.com/free-vector/hand-drawn-visit-psychologist-concept_52683-69070.jpg?size=626&ext=jpg&ga=GA1.2.1581494013.1688723703&semt=ais"
-            style={{ height: "auto", width: "38vw", marginRight: "" }}
+            style={{ height: "auto", width: "34vw", marginRight: "" }}
           />
           <img
             src="https://img.freepik.com/free-vector/woman-giving-comfort-support-friend_74855-5301.jpg?size=626&ext=jpg&ga=GA1.2.1581494013.1688723703&semt=ais"
-            style={{ height: "auto", width: "40vw", marginRight: "" }}
+            style={{ height: "auto", width: "38vw", marginRight: "" }}
           />
           {auth && auth.token ? (
             <>
               <div className="card" style={{ width: "18rem" }}>
                 <div className="card-body">
                   <h5 className="card-title">Welcome</h5>
+                  <div>
                   <p style={{ color: "blue" }}>
                     Your mental health is a priority. Your happiness is
                     essential. Your self-care is a necessity You deserve to take
                     care of yourself.
                   </p>
-                  {/* <div style={{color:'blue'}}>Logout? :(</div> */}
+                  {isDoctor?(
+                    <Link to={"/doctorPg"}>View Patients</Link>
+                  ):(
+                    <Link to={"/form"}>Click Here to Take a Mental Health Quizz</Link>
+                  )}
+                  
+                  </div>
                 </div>
               </div>
-              {/*  */}
             </>
           ) : (
             <Login />
