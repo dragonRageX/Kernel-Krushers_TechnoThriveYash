@@ -1,4 +1,4 @@
-# Kernel-Krushers_TechnoThriveYash
+# Kernel-Krushers_TechnoThriveYash: Finished 2nd Runner-Up, Grand Finale (held in Indore)
 - Generative AI Hackathon by Yash Technologies.
 # Features
 - Login/Signup Authentication using JWT.
